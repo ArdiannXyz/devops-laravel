@@ -16,4 +16,13 @@ node {
             sh 'echo "Ini adalah test"'
         }
     }
+
+    // Deploy
+    stage("Deploy") {
+        sshagent(credentials: ['ssh-prod']) {
+            sh 'mkdir -p ~/.ssh'
+            sh 'ssh-keyscan -H "127.0.0.1" >> ~/.ssh/known_hosts'
+            sh 'rsync -rav --delete ./ kaptenstayy@127.0.0.1:/home/kaptenstayy/prod.kelasdevops.xyz/ --exclude=.env --exclude=storage --exclude=.git'
+        }
+    }
 }
