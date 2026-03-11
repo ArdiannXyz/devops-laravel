@@ -3,14 +3,15 @@ node {
 
     // Build
     stage("Build") {
-        docker.image('composer:2.7').inside('-u root') {
-            sh 'composer install --no-scripts --no-interaction'
+        docker.image('php:8.4-cli').inside('--entrypoint= -u root') {
+            sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
+            sh 'composer install --no-scripts --no-interaction --ignore-platform-reqs'
         }
     }
 
     // Testing
     stage("Test") {
-        docker.image('ubuntu').inside('-u root') {
+        docker.image('ubuntu:24.04').inside('-u root') {
             sh 'echo "Ini adalah test"'
         }
     }
