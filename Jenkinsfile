@@ -4,8 +4,9 @@ node {
     // Build
     stage("Build") {
         docker.image('php:8.4-cli').inside('--entrypoint= -u root') {
+            sh 'apt-get update && apt-get install -y git zip unzip curl'
             sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
-            sh 'composer install --no-scripts --no-interaction --ignore-platform-reqs'
+            sh 'composer install --no-scripts --no-interaction'
         }
     }
 
